@@ -3,8 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
-};
+	production: false,
+	firebase: {
+		apiKey: 'AIzaSyDWvev9xzBg5pinamMSDOYJjfdno_jI0Ck',
+		authDomain: 'pwa-app-david2020.firebaseapp.com',
+		databaseURL: 'https://pwa-app-david2020.firebaseio.com',
+		projectId: 'pwa-app-david2020',
+		storageBucket: 'pwa-app-david2020.appspot.com',
+		messagingSenderId: '818000432423',
+		appId: '1:818000432423:web:91a26f1435e399969d2d02'
+	}
+}
 
 /*
  * For easier debugging in development mode, you can import the following file
