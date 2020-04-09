@@ -1,4 +1,4 @@
-import * as functions from 'firebase-functions'
+// import * as functions from 'firebase-functions';
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -8,23 +8,23 @@ import * as functions from 'firebase-functions'
 // });
 
 
-// const functions = require('firebase-functions')
-// const cors = require('cors')({ origin: true })
+const functions = require('firebase-functions')
+const cors = require('cors')({ origin: true })
 
 const cheerio = require('cheerio')
 const getUrls = require('get-urls')
-const fetch = require('node-fetch')
+const fetchFromUrl = require('node-fetch')
 
-const scrapeMetatags = text => {
+const scrapeMetatags = (text: string) => {
 	const urls = Array.from(getUrls(text))
 
 	const requests = urls.map(async url => {
-		const res = await fetch(url)
+		const res = await fetchFromUrl(url)
 
 		const html = await res.text()
 		const $ = cheerio.load(html)
 
-		const getMetatag = name =>
+		const getMetatag = (name: string) =>
 			$(`meta[name=${name}]`).attr('content') ||
 			$(`meta[property="og:${name}"]`).attr('content') ||
 			$(`meta[property="twitter:${name}"]`).attr('content')
@@ -45,7 +45,7 @@ const scrapeMetatags = text => {
 
 const puppeteer = require('puppeteer')
 
-const scrapeImages = async username => {
+const scrapeImages = async (username: string) => {
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
 
@@ -90,7 +90,7 @@ const scrapeImages = async username => {
 	return data
 }
 
-exports.scraper = functions.https.onRequest((request, response) => {
+exports.scraper = functions.https.onRequest((request: any, response: any) => {
 	cors(request, response, async () => {
 		const body = JSON.parse(request.body)
 		// const data = await scrapeMetatags(body.text);
