@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
-import { Geolocation, GeolocationPosition, Plugins } from '@capacitor/core'
+import { Geolocation, GeolocationPosition, Modals } from '@capacitor/core'
 import { MenuController } from '@ionic/angular'
 import { bindCallback, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -29,6 +29,10 @@ export class CompassPage {
 	watch: string
 	user = null
 
+	// LinePath
+	linePath
+	pathCoordinates: { lat: number; lng: number }[] = []
+
 	constructor(
 		private fbAuth: AngularFireAuth,
 		private afs: AngularFirestore,
@@ -37,31 +41,22 @@ export class CompassPage {
 		this.anonymousLogin()
 	}
 
-	openMenu() {
-		this.menu.open('side-menu')
-	}
-
 	ionViewWillEnter() {
 		this.watchPosition().subscribe(
 			(position: GeolocationPosition) => (this.position = position)
 		)
 
-		this.loadMap()
+		this.initMap()
+		this.setTracker()
+	}
+
+	openMenu() {
+		this.menu.open('side-menu')
 	}
 
 	// formats calbackFn data as an Observable
 	watchPosition(): Observable<any> {
 		return bindCallback(Geolocation.watchPosition)({})
-	}
-
-	showAlert() {
-		const lat = this.position.coords.latitude
-		const lng = this.position.coords.longitude
-
-		Plugins.Modals.alert({
-			title: 'Your Location',
-			message: `Lat: ${lat}, Lng: ${lng}`
-		})
 	}
 
 	private anonymousLogin() {
@@ -85,28 +80,82 @@ export class CompassPage {
 			)
 
 			// Update Map marker on every change
-			this.locations.subscribe(locations => {
+			/* 			this.locations.subscribe(locations => {
 				this.updateMap(locations)
-			})
+			}) */
 		})
 	}
 
 	// Initialize a blank map
-	private loadMap() {
-		const latLng = new google.maps.LatLng(40, 0)
-
+	private initMap() {
 		const mapOptions = {
-			center: latLng,
-			zoom: 5,
+			// center:  new google.maps.LatLng(38.7121152, -9.125888),
+			zoom: 18,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		}
 
 		this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions)
+
+		this.watch = Geolocation.watchPosition({}, (position, err) => {
+			if (position) {
+				this.map.setCenter({
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				})
+			}
+		})
+	}
+
+	private setDrawer() {
+		const drawingManager = new google.maps.drawing.DrawingManager({
+			drawingMode: google.maps.drawing.OverlayType.MARKER,
+			drawingControl: true,
+			drawingControlOptions: {
+				position: google.maps.ControlPosition.TOP_CENTER,
+				drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
+			},
+			markerOptions: {
+				icon:
+					'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+			},
+			circleOptions: {
+				fillColor: '#ffff00',
+				fillOpacity: 1,
+				strokeWeight: 5,
+				clickable: false,
+				editable: true,
+				zIndex: 1
+			}
+		})
+
+		// drawingManager.setMap(this.map)
+	}
+
+	private setTracker() {
+		/* 		this.pathCoordinates = [
+			{ lat: 38.71, lng: -9.201 },
+			{ lat: 38.735, lng: -9.245 },
+			{ lat: 38.775, lng: -9.26 },
+			{ lat: 38.805, lng: -9.31 },
+			{ lat: 38.825, lng: -9.36 },
+			{ lat: 38.865, lng: -9.385 }
+		]
+ */
+		this.linePath = new google.maps.Polyline({
+			// path: this.pathCoordinates,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+		})
+
+		this.linePath.setMap(this.map)
 	}
 
 	// Use Capacitor to track our geolocation
 	startTracking() {
 		this.isTracking = true
+
 		this.watch = Geolocation.watchPosition({}, (position, err) => {
 			if (position) {
 				this.addNewLocation(
@@ -114,12 +163,36 @@ export class CompassPage {
 					position.coords.longitude,
 					position.timestamp
 				)
+
+				this.pathCoordinates = [
+					...this.pathCoordinates,
+					{ lat: position.coords.latitude, lng: position.coords.longitude }
+				]
+
+				this.updateTracker()
 			}
 		})
 	}
 
+	private updateTracker() {
+		this.linePath.setPath(this.pathCoordinates)
+
+		/* 		const path = [
+			{ lat: 38.71, lng: -9.201 },
+			{ lat: 38.735, lng: -9.245 },
+			{ lat: 38.775, lng: -9.26 },
+			{ lat: 38.805, lng: -9.31 },
+			{ lat: 38.825, lng: -9.36 },
+			{ lat: 38.865, lng: -9.385 }
+		]
+
+		this.linePath.setPath(path) */
+	}
+
 	// Unsubscribe from the geolocation watch using the initial ID
 	stopTracking() {
+		this.pathCoordinates = []
+
 		Geolocation.clearWatch({ id: this.watch }).then(() => {
 			this.isTracking = false
 		})
@@ -144,7 +217,7 @@ export class CompassPage {
 	}
 
 	// Redraw all markers on the map
-	updateMap(locations) {
+	private updateMap(locations) {
 		// Remove all current marker
 		this.markers.map(marker => marker.setMap(null))
 		this.markers = []
@@ -159,5 +232,24 @@ export class CompassPage {
 			})
 			this.markers.push(marker)
 		}
+	}
+
+	showAlert() {
+		const lat = this.position.coords.latitude
+		const lng = this.position.coords.longitude
+
+		const marker = new google.maps.Marker({
+			map: this.map,
+			animation: google.maps.Animation.DROP,
+			position: new google.maps.LatLng(
+				this.position.coords.latitude,
+				this.position.coords.longitude
+			)
+		})
+
+		Modals.alert({
+			title: 'Your Location',
+			message: `Lat: ${lat}, Lng: ${lng}`
+		})
 	}
 }

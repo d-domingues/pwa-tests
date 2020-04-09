@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 
 import { CameraPage } from './camera.page'
+import { PhotoDisplayerComponent } from './photo-displayer/photo-displayer.component'
 
 @NgModule({
 	imports: [
@@ -11,6 +12,7 @@ import { CameraPage } from './camera.page'
 		IonicModule,
 		RouterModule.forChild([{ path: '', component: CameraPage }])
 	],
-	declarations: [CameraPage]
+	declarations: [CameraPage, PhotoDisplayerComponent],
+	entryComponents: [PhotoDisplayerComponent]
 })
 export class CameraPageModule {}

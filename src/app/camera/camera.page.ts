@@ -1,7 +1,8 @@
 import { Component } from '@angular/core'
-import { ActionSheetController } from '@ionic/angular'
+import { ActionSheetController, MenuController, ModalController } from '@ionic/angular'
 
 import { PhotoService } from '../services/photo.service'
+import { PhotoDisplayerComponent } from './photo-displayer/photo-displayer.component'
 
 @Component({
 	selector: 'app-camera',
@@ -11,20 +12,28 @@ import { PhotoService } from '../services/photo.service'
 export class CameraPage {
 	storedPhotos
 
+	slideOpts = {
+		speed: 400,
+		initialSlide: 0
+	}
+
 	storedPhotos$ = this.photoService.storedPhotos$
 
 	constructor(
 		public photoService: PhotoService,
-		public actionSheetController: ActionSheetController
-	) {}
+		public actionSheetController: ActionSheetController,
+		public modalController: ModalController,
+		private menu: MenuController
+	) {	}
 
-	ngOnInit() {
-		this.photoService.storedPhotos$.subscribe(storedPhotos => {
-			console.log(storedPhotos)
-			this.storedPhotos = storedPhotos
-		})
+	ionViewWillEnter() {
+		this.photoService.storedPhotos$.subscribe(
+			storedPhotos => (this.storedPhotos = storedPhotos)
+		)
+	}
 
-		// this.photoService.loadSaved()
+	openMenu() {
+		this.menu.open('side-menu')
 	}
 
 	async showActionSheet(photo, position) {
@@ -50,5 +59,13 @@ export class CameraPage {
 			]
 		})
 		await actionSheet.present()
+	}
+
+	async presentModal(position: number) {
+		const modal = await this.modalController.create({
+			component: PhotoDisplayerComponent,
+			componentProps: { position }
+		})
+		return await modal.present()
 	}
 }

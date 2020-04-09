@@ -11,12 +11,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular'
 
 import { environment } from '../environments/environment'
 import { AppRoutingModule } from './app-routing.module'
-import { AppComponent } from './app.component';
-import { PhotoPipe } from './photo.pipe'
+import { AppComponent } from './app.component'
 
 @NgModule({
-	declarations: [AppComponent, PhotoPipe],
-	entryComponents: [],
+	declarations: [AppComponent],
 	imports: [
 		BrowserModule,
 		IonicModule.forRoot(),

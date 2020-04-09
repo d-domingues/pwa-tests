@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-toolbar>
+	<ion-toolbar color="primary">
 		<ion-buttons slot="start">
 			<ion-menu-button (click)="openMenu()"></ion-menu-button>
 		</ion-buttons>
@@ -10,7 +10,7 @@
 <ion-content>
 	<div #map id="map" [hidden]="!user"></div>
 	<br />
-	<ion-button (click)="showAlert()">LOCATION</ion-button>
+	<ion-button (click)="showAlert()">WHERE AM I?</ion-button>
 	<br />
 
 	<div *ngIf="user">

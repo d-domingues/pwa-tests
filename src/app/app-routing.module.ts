@@ -22,10 +22,10 @@ const routes: Routes = [
 		loadChildren: () =>
 			import('./compass/compass.module').then(m => m.CompassPageModule)
 	},
-  {
-    path: 'photo',
-    loadChildren: () => import('./photo/photo.module').then( m => m.PhotoPageModule)
-  }
+	{
+		path: 'test',
+		loadChildren: () => import('./test/test.module').then(m => m.TestPageModule)
+	}
 ]
 
 @NgModule({

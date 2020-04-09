@@ -2,6 +2,7 @@
 	"extends": "tslint:recommended",
 	"rulesDirectory": ["codelyzer"],
 	"rules": {
+		"variable-name": false,
 		"indent": false,
 		"eofline": false,
 		"semicolon": false,

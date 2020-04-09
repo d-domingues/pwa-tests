@@ -3,6 +3,6 @@
 	"appName": "PWA elements",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
-	"webDir": "dist",
+	"webDir": "www",
 	"cordova": {}
 }
