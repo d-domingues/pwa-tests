@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  width: 400px;
+  
+  .column {
+    max-width: 100%;
+    flex: 0 0 400px;
+  }
+  
+  img, canvas {
+    max-width: 100%;
+  }
+  
+}
+
+.video-container {
+  width: 400px;
+}

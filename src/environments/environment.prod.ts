@@ -1,5 +1,6 @@
 export const environment = {
 	production: true,
+	apiUrl: 'https://us-central1-pwa-app-david2020.cloudfunctions.net',
 	firebase: {
 		apiKey: 'AIzaSyDWvev9xzBg5pinamMSDOYJjfdno_jI0Ck',
 		authDomain: 'pwa-app-david2020.firebaseapp.com',

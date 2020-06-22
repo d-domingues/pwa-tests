@@ -3,6 +3,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx'
 import { StatusBar } from '@ionic-native/status-bar/ngx'
 import { Platform } from '@ionic/angular'
 
+import { routes } from './app-routing.module'
+
 @Component({
 	selector: 'app-root',
 	templateUrl: 'app.component.html',
@@ -10,7 +12,13 @@ import { Platform } from '@ionic/angular'
 })
 export class AppComponent implements OnInit {
 	public selectedIndex = 0
-	public appPages = [
+	public appPages = routes.map(r => ({
+		title: r.path,
+		url: '/' + r.path
+	}))
+
+	/*
+	[
 		{
 			title: 'Camera',
 			url: '/camera',
@@ -21,7 +29,7 @@ export class AppComponent implements OnInit {
 			url: '/compass',
 			icon: 'compass'
 		}
-		/* {
+		{
 			title: 'Outbox',
 			url: '/folder/Outbox',
 			icon: 'paper-plane'
@@ -45,8 +53,9 @@ export class AppComponent implements OnInit {
 			title: 'Spam',
 			url: '/folder/Spam',
 			icon: 'warning'
-		} */
+		}
 	]
+	*/
 
 	constructor(
 		private platform: Platform,

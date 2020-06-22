@@ -1,7 +1,20 @@
-<ion-header>
+<!-- <ion-header>
 	<ion-toolbar color="primary">
 		<ion-title>test</ion-title>
 	</ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content> </ion-content>
+<ion-content>
+	<div class="container">
+		<!-- 		<div class="column">
+			<img #srcImg src="./../../assets/img/img1.jpg" />
+		</div> -->
+		<div class="column">
+			<canvas #canvasEl (click)="pick(canvasEl, $event)" [width]='50' [height]="500"></canvas>
+			<!-- <canvas #canvasEl (mousemove)="pick(canvasEl, $event)" [width]='50' [height]="500"></canvas>
+		 -->
+		</div>
+	</div>
+
+	<button (click)="onClick(canvasEl)">Invert Colors</button>
+</ion-content>

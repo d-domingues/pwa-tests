@@ -1,0 +1,20 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-title>Quem sou?</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-progress-bar color="secondary" [value]="progress"></ion-progress-bar>
+	<carol-figure [figure]="figures[currentIdx]"></carol-figure>
+	<div class="ion-text-center">
+		<ion-button
+			*ngFor="let opt of options"
+			[color]="opt.id === figures[currentIdx].id ? 'favorite' : 'primary'"
+			size="large"
+			(click)="select(opt)"
+		>
+			{{ opt.name }}
+		</ion-button>
+	</div>
+</ion-content>

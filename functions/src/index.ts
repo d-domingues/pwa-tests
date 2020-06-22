@@ -4,17 +4,19 @@
 // // https://firebase.google.com/docs/functions/typescript
 //
 // export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
-
+    //  response.send("Hello from Firebase!");
+    // });
+    
+    
 const functions = require('firebase-functions')
 const cors = require('cors')({ origin: true })
 
 const cheerio = require('cheerio')
 const getUrls = require('get-urls')
 const fetchFromUrl = require('node-fetch')
+const puppeteer = require('puppeteer')
 
+    
 const scrapeMetatags = (text: string) => {
 	const urls = Array.from(getUrls(text))
 
@@ -43,7 +45,6 @@ const scrapeMetatags = (text: string) => {
 	return Promise.all(requests)
 }
 
-const puppeteer = require('puppeteer')
 
 const scrapeImages = async (username: string) => {
 	const browser = await puppeteer.launch({ headless: true })
@@ -63,7 +64,6 @@ const scrapeImages = async (username: string) => {
 	await page.click('[type=submit]')
 
 	// Social Page
-
 	await page.waitFor(5000)
 
 	await page.goto(`https://www.instagram.com/${username}`)

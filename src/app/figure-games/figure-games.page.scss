@@ -1,0 +1,26 @@
+ion-content {
+	--background: url('../../assets/wallpapers/pandas.jpg') mistyrose;
+}
+
+ion-button {
+	font-family: 'Sacramento';
+	text-transform: none !important;
+	color: darkslateblue;
+	font-weight: bold;
+	font-size: 25px;
+	--background: white;
+}
+
+ion-title {
+	font-family: 'FrederickatheGreat';
+	font-size: 50px;
+}
+
+.result-toast {
+	width: 40px;
+	height: 40px;
+	color: red;
+	background: transparent;
+	opacity: 0.5;
+	--background: blue;
+}

@@ -1,0 +1,17 @@
+ion-card {
+	font-family: 'Sacramento';
+	background: rgba(200, 150, 150, 0.5);
+
+	ion-img {
+		margin: 10px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+
+	ion-card-title {
+		font-size: 25px;
+		font-weight: bold;
+		padding: 0px;
+		color: rgb(145, 134, 216);
+	}
+}

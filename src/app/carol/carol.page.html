@@ -1,0 +1,15 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-title>Album</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid>
+		<ion-row>
+			<ion-col size="6" *ngFor="let figure of figures">
+				<carol-figure [figure]="figure" [text]="figure.name"></carol-figure>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

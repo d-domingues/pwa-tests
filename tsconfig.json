@@ -17,7 +17,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@img/*": ["src/assets/img/*"], // doesn't work
+      "@service/*": ["src/app/carol/services/*"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
