@@ -35,10 +35,10 @@ export const routes: Routes = [
 		loadChildren: () =>
 			import('./figure-games/figure-games.module').then(m => m.FigureGamesPageModule)
 	},
-  {
-    path: 'match-game',
-    loadChildren: () => import('./match-game/match-game.module').then( m => m.MatchGamePageModule)
-  }
+	{
+	 	path: 'match-game',
+	 	loadChildren: () => import('./match-game/match-game.module').then( m => m.MatchGamePageModule)
+	}
 ]
 
 @NgModule({
